@@ -31,7 +31,6 @@
         "squizlabs/php_codesniffer": "^3.0",
         "phpstan/phpstan": "^0.12"
     },
-    "suggest": [],
     "autoload": {
         "psr-4": {
             "Middlewares\\": "src/"
