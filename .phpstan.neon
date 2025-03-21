@@ -1,0 +1,10 @@
+parameters:
+    reportUnmatchedIgnoredErrors: false
+    level: 8
+    paths:
+        - src
+        - tests
+    ignoreErrors:
+        -
+            identifier: 'isset.offset'
+            reportUnmatched: false
