@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Middlewares\Tests;
 
@@ -8,12 +8,11 @@ use Middlewares\JsonExceptionHandler;
 use Middlewares\Utils\Dispatcher;
 use Middlewares\Utils\Factory;
 use PHPUnit\Framework\TestCase;
-
 use function WyriHaximus\throwable_json_decode;
 
 class JsonExceptionHandlerTest extends TestCase
 {
-    public function testMiddleware()
+    public function testMiddleware(): void
     {
         $middleware = new JsonExceptionHandler();
 
@@ -35,7 +34,7 @@ class JsonExceptionHandlerTest extends TestCase
         $this->assertSame('Something went wrong', $e->getMessage());
     }
 
-    public function testContentType()
+    public function testContentType(): void
     {
         $middleware = new JsonExceptionHandler();
         $middleware->contentType($type = 'application/json;charset=utf-8');
@@ -54,7 +53,7 @@ class JsonExceptionHandlerTest extends TestCase
         $this->assertSame($type, $response->getHeaderLine('Content-Type'));
     }
 
-    public function testDisableTrace()
+    public function testDisableTrace(): void
     {
         $middleware = new JsonExceptionHandler();
         $middleware->includeTrace(false);
@@ -77,7 +76,7 @@ class JsonExceptionHandlerTest extends TestCase
         $this->assertEmpty($e->getTrace());
     }
 
-    public function testJsonOptions()
+    public function testJsonOptions(): void
     {
         $middleware = new JsonExceptionHandler();
         $middleware->jsonOptions(JSON_PRETTY_PRINT);

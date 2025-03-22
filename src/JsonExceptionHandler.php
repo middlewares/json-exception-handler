@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Middlewares;
 
@@ -10,9 +10,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Throwable;
-
 use function Safe\json_encode;
+use Throwable;
 use function WyriHaximus\throwable_encode;
 
 class JsonExceptionHandler implements MiddlewareInterface
@@ -33,8 +32,8 @@ class JsonExceptionHandler implements MiddlewareInterface
     private $jsonOptions = 0;
 
     public function __construct(
-        ResponseFactoryInterface $responseFactory = null,
-        StreamFactoryInterface $streamFactory = null
+        ?ResponseFactoryInterface $responseFactory = null,
+        ?StreamFactoryInterface $streamFactory = null
     ) {
         $this->responseFactory = $responseFactory ?? Factory::getResponseFactory();
         $this->streamFactory = $streamFactory ?? Factory::getStreamFactory();
@@ -87,7 +86,20 @@ class JsonExceptionHandler implements MiddlewareInterface
         $exceptionJson = throwable_encode($e);
 
         if ($this->includeTrace === false) {
-            $exceptionJson['trace'] = [];
+            // version 2 (php 7.2 and 7.3)
+            /* @phpstan-ignore isset.offset */
+            if (isset($exceptionJson['trace'])) {
+                $exceptionJson['trace'] = [];
+            }
+
+            // version 3 and 4 (7.4, >= 8.0)
+            /* @phpstan-ignore isset.offset */
+            if (isset($exceptionJson['originalTrace'])) {
+                $exceptionJson['originalTrace'] = [];
+                $exceptionJson['additionalProperties'] = [
+                    'trace' => serialize([]),
+                ];
+            }
         }
 
         $exceptionJson = json_encode($exceptionJson, $this->jsonOptions);

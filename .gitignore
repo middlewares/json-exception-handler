@@ -4,3 +4,6 @@ build
 composer.lock
 phpunit.xml
 .php_cs.cache
+.idea
+kit
+*.cache
